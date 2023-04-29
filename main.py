@@ -14,7 +14,7 @@ def get_puerto(): #Defino el puerto
 
 #CODIGO PRINCIPAL
 if __name__ == '__main__':
-    os.system('clear')
+    os.system('cls')
     while True:
         print('1. Proveedor')
         print('2. Fumador (5 opciones)')
@@ -22,8 +22,8 @@ if __name__ == '__main__':
         if type in ['1', '2']:
             break
         else:
-            os.system('clear')
-    os.system('clear')
+            os.system('cls')
+    os.system('cls')
     if type == '1':
         print('Proveedor')
         from proveedor import init
@@ -37,7 +37,7 @@ if __name__ == '__main__':
             if type in codes:
                 break
             else:
-                os.system('clear')
+                os.system('cls')
         ip = input('IP del proveedor: ')
         from fumador import init
         init(ip, get_puerto(), type)
