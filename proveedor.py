@@ -63,3 +63,17 @@ class MyTCPServerHandler(socketserver.BaseRequestHandler): #Clase que creo para 
         
     def handle_timeout(self):
         print('Tiempo de espera agotado')
+
+def verificar_conexion(): #Verifica si los fumadores están conectados
+    while True:
+        fumadores_activos = True
+        for i in codes:
+            if store[i].get('flag') is False:
+                fumadores_activos = False
+                break
+        time.sleep(time_sleep)
+        if fumadores_activos and smoke is False:
+            break
+        else:
+            if fumadores_activos is False:
+                _print('Esperando a todos los fumadores')
