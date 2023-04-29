@@ -27,3 +27,23 @@ def proceso(code, request):
         time.sleep(time_sleep)
 
 
+def init(ip, puerto, code):
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((ip, puerto))
+
+        sock.send('{}'.format(code).encode('UTF-8'))
+        time.sleep(time_sleep)
+
+        respuesta = sock.recv(packet_size).decode('UTF-8')
+        if respuesta == 'accepte':
+            proceso(code, sock)
+        else:
+            _print('Rechazado por el proveedor')
+
+        sock.close()
+
+    except KeyboardInterrupt:
+        _print('Cerrando conexiones...')
+        sock.send('exit'.encode('UTF-8'))
+        sock.close()
