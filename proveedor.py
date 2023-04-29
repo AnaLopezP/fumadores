@@ -17,17 +17,17 @@ class MyTCPServerHandler(socketserver.BaseRequestHandler): #Clase que creo para 
 
     def proceso(self):
         while True:
-            mensaje = self.request.recv(packet_size).decode('UTF-8')
-            if mensaje == 'need':
+            mensaje = self.request.recv(packet_size).decode('UTF-8') #Recibo el mensaje del fumador
+            if mensaje == 'need': #El fumador necesita un recurso
                 _print('{}: Necesito {}'.format(store.get(self.code)['name'], store.get(self.code)['required']))
-                if self.smoke_released:
+                if self.smoke_released: #Pongo el smoke y el smoke released a False porque no está fumando
                     self.smoke_released = False
                     global smoke 
                     smoke = False
 
-            elif mensaje == 'enable':
+            elif mensaje == 'enable': #El fumador puede fumar
                 _print('{}: Termino de fumar'.format(store.get(self.code)['name']))
-                self.smoke_released = True
+                self.smoke_released = True #True porque está fumando
 
             elif mensaje == 'ack':
                 time.sleep(time_smoke)
