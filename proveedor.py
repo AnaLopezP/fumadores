@@ -51,3 +51,15 @@ class MyTCPServerHandler(socketserver.BaseRequestHandler): #Clase que creo para 
             self.rejected = True
             _print('Fumador rechazado *{}*'.format(store.get(self.code)['name']))
             self.request.send('rejected'.encode('UTF-8'))
+
+    def finish(self): #Cuando terminan todos de fumar
+        _print('Fumador desconectado *{}*'.format(store.get(self.code)['name']))
+        if self.rejected == False:
+            store.get(self.code)['flag'] = False
+        global smoke_code
+        if smoke_code == self.code:
+            global smoke 
+            smoke = False
+        
+    def handle_timeout(self):
+        print('Tiempo de espera agotado')
