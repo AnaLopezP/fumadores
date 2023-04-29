@@ -68,12 +68,12 @@ def verificar_conexion(): #Verifica si los fumadores están conectados
     while True:
         fumadores_activos = True
         for i in codes:
-            if store[i].get('flag') is False:
+            if store[i].get('flag') is False: #Si flag es False, entonces los fumadores no están conectados
                 fumadores_activos = False
                 break
         time.sleep(time_sleep)
-        if fumadores_activos and smoke is False:
+        if fumadores_activos and smoke is False: #Salgo si smoke es false porque entonces han terminado de fumar
             break
         else:
-            if fumadores_activos is False:
+            if fumadores_activos is False: #Si no han fumado pero no se han conectado
                 _print('Esperando a todos los fumadores')
