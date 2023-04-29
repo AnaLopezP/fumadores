@@ -35,3 +35,20 @@ class MyTCPServerHandler(socketserver.BaseRequestHandler): #Clase que creo para 
             elif mensaje == 'exit':
                 break
             time.sleep(time_sleep)
+
+    def handle(self):#Funcion para manejar el servidor
+        self.code = self.request.recv(packet_size).decode('UTF-8')
+        self.rejectd = False
+        self.smoke_released = False
+        _print('Conectando fumador...')
+        if store.get(self.code)['flag'] is False:
+            store.get(self.code)['request'] = self.request
+            store.get(self.code)['flag'] = True
+            _print('Fumador aceptado *{}*'.format(store.get(self.code)['name']))
+            self.request.send('accepte'.encode('UTF-8'))
+            self.proceso()
+        else:
+            self.rejected = True
+            _print('Fumador rechazado *{}*'.format(store.get(self.code)['name']))
+            self.request.send('rejected'.encode('UTF-8'))
+            
