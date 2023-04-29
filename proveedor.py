@@ -77,3 +77,29 @@ def verificar_conexion(): #Verifica si los fumadores están conectados
         else:
             if fumadores_activos is False: #Si no han fumado pero no se han conectado
                 _print('Esperando a todos los fumadores')
+
+
+def init(puerto):
+    try:
+        servidor = MyTCPServer(('0.0.0.0', puerto), MyTCPServerHandler)
+        servidor.timeout = 10
+        servidor_hilo = threading.Thread(target = servidor.serve_forever)
+        servidor_hilo.timeout = 10
+        _print('La tienda está abierta')
+        servidor_hilo.daemon = True
+        servidor_hilo.start()
+
+        while True:
+            verificar_conexion()
+            global smoke_code
+            smoke_code = choice(codes)
+            _print('Tengo disponible {}'.format(store.get(smoke_code)['required']))
+            global smoke
+            smoke = True
+            store.get(smoke_code)['request'].send('enable'.encode('UTF-8'))
+            _print('Fumador {} servido'.format(store.get(smoke_code)['name']))
+    except KeyboardInterrupt:
+        _print('Cerrando conexiones...')
+        servidor.shutdown()
+        servidor.server_close()
+                        
