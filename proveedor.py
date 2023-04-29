@@ -81,23 +81,24 @@ def verificar_conexion(): #Verifica si los fumadores están conectados
 
 def init(puerto):
     try:
-        servidor = MyTCPServer(('0.0.0.0', puerto), MyTCPServerHandler)
-        servidor.timeout = 10
-        servidor_hilo = threading.Thread(target = servidor.serve_forever)
+        servidor = MyTCPServer(('0.0.0.0', puerto), MyTCPServerHandler) #Creo el servidor llamando a la clase
+        servidor.timeout = 10 
+        servidor_hilo = threading.Thread(target = servidor.serve_forever) #Creo un hilo demonio para que se ejecute en la sombra
         servidor_hilo.timeout = 10
         _print('La tienda está abierta')
-        servidor_hilo.daemon = True
-        servidor_hilo.start()
+        servidor_hilo.daemon = True #Demonio para que escuche por peticiones en segundo plano
+        servidor_hilo.start() #Inicializo el hilo
 
         while True:
-            verificar_conexion()
+            verificar_conexion() #Verifico si los fumadores están conectados
             global smoke_code
             smoke_code = choice(codes)
-            _print('Tengo disponible {}'.format(store.get(smoke_code)['required']))
+            _print('Tengo disponible {}'.format(store.get(smoke_code)['required'])) #Le doy el material que necesita el fumador
             global smoke
             smoke = True
-            store.get(smoke_code)['request'].send('enable'.encode('UTF-8'))
+            store.get(smoke_code)['request'].send('enable'.encode('UTF-8')) #Envío el mensaje de que ya tiene el recurso
             _print('Fumador {} servido'.format(store.get(smoke_code)['name']))
+
     except KeyboardInterrupt:
         _print('Cerrando conexiones...')
         servidor.shutdown()
